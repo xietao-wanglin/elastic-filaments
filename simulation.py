@@ -4,6 +4,7 @@ from matplotlib.animation import FuncAnimation
 from scipy.linalg import solve_banded
 from typing import Optional
 from tqdm import tqdm
+import pandas as pd
 
 class Simulation:
 
@@ -53,7 +54,7 @@ class Simulation:
         Ab[6, -5] = 3/2
         b = (prev).copy()
         b[0] = 0
-        b[1] = np.exp(1j*self.osc_freq*self.dt*iteration)
+        b[1] = np.real(np.exp(1j*self.osc_freq*self.dt*iteration))
 
         b[-1] = 0
         b[-2] = 0
@@ -83,12 +84,27 @@ class Simulation:
         animation = FuncAnimation(fig, update, interval=50, frames=100)
         plt.show()
 
+    def save_data(self, filename=None):
+        if filename is None:
+            filename = f'eta_{self.eta}'
+        x = np.linspace(0, self.length, self.n_points)
+        t = np.linspace(0, self.max_time, self.timesteps)
+        y_real = np.real(self.y)
+        df_data = []
+        for j, t_j in enumerate(t):
+            for i, x_i in enumerate(x):
+                list_data = [x_i, t_j, y_real[j][i], self.eta]
+                df_data.append(list_data)
+        
+        df = pd.DataFrame(df_data, columns=['x', 't', 'y', 'eta'])
+        df.to_parquet(f'./data/{filename}.parquet')
+
 if __name__ == "__main__":
 
     sim = Simulation(timesteps=10000,
                      n_points=200,
-                     max_time=10, osc_freq=4,
-                     length_multiplier=10)
+                     max_time=10, osc_freq=1,
+                     length_multiplier=1)
     
     sim.run()
     sim.create_video()
