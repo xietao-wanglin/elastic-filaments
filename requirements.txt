@@ -1,0 +1,8 @@
+DeepXDE==1.11.1
+matplotlib
+numpy
+pandas
+pyarrow
+scipy
+torch
+tqdm
