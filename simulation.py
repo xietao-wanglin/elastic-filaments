@@ -13,14 +13,14 @@ class Simulation:
                 max_time: float, 
                 eta: Optional[float] = 1.0, 
                 osc_freq: Optional[float] = 1.0, 
-                length_multiplier: Optional[int] = 1) -> None:
+                length: Optional[float] = 1.0) -> None:
         
         self.timesteps = timesteps
         self.n_points = n_points
         self.max_time = max_time
         self.eta = eta
         self.osc_freq = osc_freq
-        self.length = length_multiplier*((eta/osc_freq)**(1/4))
+        self.length = length
         self.dt = self.max_time/(self.timesteps-1)
         self.dx = self.length/(self.n_points-1)
         self.y = np.zeros((self.timesteps, self.n_points), dtype=np.cdouble)
@@ -61,15 +61,19 @@ class Simulation:
         sol = solve_banded((4,2), Ab, b)
         return sol
     
-    def run(self):
-        print('Solving BVP... \n')
-        for iteration in tqdm(range(1, self.timesteps)):
-            self.y[iteration] = self.next_t(self.y[iteration-1], iteration)
+    def run(self, verbose=False):
+        if verbose:
+            print('Solving BVP... \n')
+            for iteration in tqdm(range(1, self.timesteps)):
+                self.y[iteration] = self.next_t(self.y[iteration-1], iteration)
+        else:
+            for iteration in range(1, self.timesteps):
+                self.y[iteration] = self.next_t(self.y[iteration-1], iteration)
 
     def create_video(self):
         fig = plt.figure()
         ax = fig.add_axes([0, 0, 1, 1])
-        ax.set_xlim(-0.2, self.length + 0.2)
+        ax.set_xlim(0, self.length)
         ax.set_ylim(-1, 1)
         ax.grid()
         x = np.linspace(0, self.length, self.n_points) # Grid
@@ -84,27 +88,22 @@ class Simulation:
         animation = FuncAnimation(fig, update, interval=50, frames=100)
         plt.show()
 
+    def get_data(self):
+        y_real = np.real(self.y)
+        x = np.linspace(0, self.length, self.n_points)
+        t = np.linspace(0, self.max_time, self.timesteps)
+        return y_real, x, t, self.eta
+
     def save_data(self, filename=None):
         if filename is None:
             filename = f'eta_{self.eta}'
-        x = np.linspace(0, self.length, self.n_points)
-        t = np.linspace(0, self.max_time, self.timesteps)
-        y_real = np.real(self.y)
+        
+        y_real, x, t, _ = self.get_data()
         df_data = []
         for j, t_j in enumerate(t):
             for i, x_i in enumerate(x):
-                list_data = [x_i, t_j, y_real[j][i], self.eta]
+                list_data = [x_i, self.eta, t_j, y_real[j][i]]
                 df_data.append(list_data)
         
-        df = pd.DataFrame(df_data, columns=['x', 't', 'y', 'eta'])
+        df = pd.DataFrame(df_data, columns=['x', 'eta', 't', 'y'])
         df.to_parquet(f'./data/{filename}.parquet')
-
-if __name__ == "__main__":
-
-    sim = Simulation(timesteps=10000,
-                     n_points=200,
-                     max_time=10, osc_freq=1,
-                     length_multiplier=1)
-    
-    sim.run()
-    sim.create_video()
