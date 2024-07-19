@@ -6,7 +6,7 @@ from simulation import Simulation
 
 if __name__ == "__main__":
 
-    n_etas = 100
+    n_etas = 10
     seed = 0
     np.random.seed(seed)
     eta_range = np.random.uniform(0, 10, n_etas)
