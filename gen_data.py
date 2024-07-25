@@ -11,14 +11,14 @@ each with different values of eta.
 if __name__ == "__main__":
 
     n_etas = 100
-    seed = 2
+    seed = 3
     np.random.seed(seed)
-    eta_range = np.random.uniform(0, 10, n_etas)
+    eta_range = np.random.uniform(10000, 20000, n_etas)
     data_all = []
     print('Generating dataset... \n')
     for eta in tqdm(eta_range):
-        sim = Simulation(timesteps=100,
-                         n_points=20,
+        sim = Simulation(timesteps=1000,
+                         n_points=50,
                          max_time=1, osc_freq=1,
                          length=1, eta=eta)
         sim.run()
