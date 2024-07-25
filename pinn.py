@@ -49,7 +49,7 @@ if __name__ == "__main__":
     x_test, y_test = load_data('./data/test_0.parquet')
 
     geom = dde.geometry.Rectangle([0, 0], [1, 10]) # X x [\eta]
-    timedomain = dde.geometry.TimeDomain(0, 10) # T
+    timedomain = dde.geometry.TimeDomain(0, 1) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
     bc1 = dde.icbc.DirichletBC(geomtime, lambda x: 0, boundary_l)
