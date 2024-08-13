@@ -115,8 +115,5 @@ if __name__ == "__main__":
     
     dde.saveplot(losshistory, train_state, issave=True, isplot=True)
 
-    with open('/data/errors_train.npy', 'wb') as f:
-        np.save(f, errors_train)
-
-    with open('/data/errors_test.npy', 'wb') as f:
-        np.save(f, errors_test)
+    np.save('/data/errors_train.npy', errors_train)
+    np.save('/data/errors_test.npy', errors_test)
