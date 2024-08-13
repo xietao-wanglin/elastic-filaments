@@ -98,7 +98,7 @@ if __name__ == "__main__":
         errors_train[s] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s] = dde.metrics.l2_relative_error(y_train, y_pred_test)
         print(f'L2 rel. errors. Prediction: {errors_train[s]}. Extrapolation: {errors_test[s]}')
-        losshistory, train_state = model.train(iterations=1000, model_save_path='./model')
+        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
 
     print('Training L-BFGS optimiser... \n')
     for s in range(sets_lbfgs):
@@ -109,11 +109,11 @@ if __name__ == "__main__":
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_test)
-        losshistory, train_state = model.train(iterations=1000, model_save_path='./model')
+        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
 
     print('Saving data... \n')
     
-    dde.saveplot(losshistory, train_state, issave=True, isplot=True)
+    dde.saveplot(losshistory, train_state, issave=True, isplot=True, output_dir='./data')
 
     np.save('/data/errors_train.npy', errors_train)
     np.save('/data/errors_test.npy', errors_test)
