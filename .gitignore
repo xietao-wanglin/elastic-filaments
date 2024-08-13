@@ -165,6 +165,7 @@ cython_debug/
 *.png
 *.parquet
 *.npy
+*.dat
 
 # Model checkpoints
 *.pt

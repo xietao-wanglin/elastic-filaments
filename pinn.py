@@ -55,6 +55,7 @@ if __name__ == "__main__":
     # One set is 1000 iterations
     sets_adam = 30
     sets_lbfgs = 5
+    sets_adam2 = 20
 
     x_train, y_train = load_data('./data/train.parquet')
     x_test, y_test = load_data('./data/test.parquet')
@@ -87,8 +88,9 @@ if __name__ == "__main__":
     net = dde.nn.FNN([3] + [48] * 4 + [1], "tanh", "Glorot normal")
     model = dde.Model(data, net)
 
-    errors_train = np.zeros(sets_adam + sets_lbfgs)
-    errors_test = np.zeros(sets_adam + sets_lbfgs)
+    total_sets = sets_adam + sets_lbfgs + sets_adam2
+    errors_train = np.zeros(total_sets)
+    errors_test = np.zeros(total_sets)
 
     print('Training Adam optimiser... \n')
     for s in range(sets_adam):
@@ -109,6 +111,15 @@ if __name__ == "__main__":
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_test)
+        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
+    
+    print('Training Adam (2) optimiser... \n')
+    for s in range(sets_adam2):
+        model.compile("adam", lr=1e-3)
+        y_pred_train = model.predict(x_train)
+        y_pred_test = model.predict(x_test)
+        errors_train[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_train)
+        errors_test[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_test)
         losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
 
     print('Saving data... \n')
