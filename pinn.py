@@ -52,6 +52,10 @@ if __name__ == "__main__":
 
     print('Initialisation... \n')
 
+    results_folder = 'run3'
+    if not os.path.exists(results_folder):
+        os.makedirs(results_folder)
+
     # One set is 1000 iterations
     sets_adam = 30
     sets_lbfgs = 5
@@ -100,7 +104,7 @@ if __name__ == "__main__":
         errors_train[s] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s] = dde.metrics.l2_relative_error(y_train, y_pred_test)
         print(f'L2 rel. errors. Prediction: {errors_train[s]}. Extrapolation: {errors_test[s]}')
-        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
+        losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
 
     print('Training L-BFGS optimiser... \n')
     for s in range(sets_lbfgs):
@@ -111,7 +115,7 @@ if __name__ == "__main__":
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_test)
-        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
+        losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
     
     print('Training Adam (2) optimiser... \n')
     for s in range(sets_adam2):
@@ -120,11 +124,11 @@ if __name__ == "__main__":
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_train)
         errors_test[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_test)
-        losshistory, train_state = model.train(iterations=1000, model_save_path='./model/model')
+        losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
 
     print('Saving data... \n')
     
-    dde.saveplot(losshistory, train_state, issave=True, isplot=True, output_dir='./data')
+    dde.saveplot(losshistory, train_state, issave=True, isplot=True, output_dir=f'./{results_folder}')
 
-    np.save('/data/errors_train.npy', errors_train)
-    np.save('/data/errors_test.npy', errors_test)
+    np.save(f'/{results_folder}/errors_train.npy', errors_train)
+    np.save(f'/{results_folder}/errors_test.npy', errors_test)
