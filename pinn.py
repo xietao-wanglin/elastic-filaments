@@ -130,5 +130,5 @@ if __name__ == "__main__":
     
     dde.saveplot(losshistory, train_state, issave=True, isplot=True, output_dir=f'./{results_folder}')
 
-    np.save(f'/{results_folder}/errors_train.npy', errors_train)
-    np.save(f'/{results_folder}/errors_test.npy', errors_test)
+    np.save(f'./{results_folder}/errors_train.npy', errors_train)
+    np.save(f'./{results_folder}/errors_test.npy', errors_test)
