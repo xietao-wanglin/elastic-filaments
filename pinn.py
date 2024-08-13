@@ -48,11 +48,14 @@ def load_data(dataset_path):
     x_data = data.to_numpy()
     return x_data, y_data
 
+def output_transform(x, y):
+    return x[:, 0:1]*x[:, 2:3]*y
+
 if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'run5'
+    results_folder = 'run6'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -68,7 +71,7 @@ if __name__ == "__main__":
     timedomain = dde.geometry.TimeDomain(0, 1) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
-    bc1 = dde.icbc.DirichletBC(geomtime, lambda x: 0, boundary_l)
+    bc1 = dde.icbc.DirichletBC(geomtime, lambda x: 0, boundary_l) # Not used
     bc2 = dde.icbc.OperatorBC(geomtime, lambda x, y, _: dy(x, y) - torch.cos(x[:, 2:3]), boundary_l)
     bc3 = dde.icbc.OperatorBC(geomtime, lambda x, y, _: ddy(x, y), boundary_r)
     bc4 = dde.icbc.OperatorBC(geomtime, lambda x, y, _: dddy(x, y), boundary_r)
@@ -77,12 +80,12 @@ if __name__ == "__main__":
         geomtime,
         lambda x: 0,
         lambda _, on_initial: on_initial,
-    )
+    ) # Not used
 
     data = dde.data.TimePDE(
         geomtime,
         pde,
-        [bc1, bc2, bc3, bc4, ic],
+        [bc2, bc3, bc4],
         num_domain=6000,
         num_boundary=2000,
         num_initial=2000,
@@ -91,6 +94,7 @@ if __name__ == "__main__":
 
     net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot normal")
     model = dde.Model(data, net)
+    net.apply_output_transform(output_transform)
 
     total_sets = sets_adam + sets_lbfgs + sets_adam2
     errors_train = np.zeros(total_sets)
