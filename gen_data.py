@@ -5,15 +5,15 @@ from tqdm import tqdm
 from simulation import Simulation
 
 """
-This scripts generates a large dataset with many simulations,
-each with different values of eta.
+This script generates a large dataset with many simulations,
+each with a different value of eta.
 """
 if __name__ == "__main__":
 
     n_etas = 100
-    seed = 3
+    seed = 5
     np.random.seed(seed)
-    eta_range = np.random.uniform(10000, 20000, n_etas)
+    eta_range = np.random.uniform(10, 20, n_etas)
     data_all = []
     print('Generating dataset... \n')
     for eta in tqdm(eta_range):

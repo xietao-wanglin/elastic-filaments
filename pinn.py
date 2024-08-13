@@ -17,8 +17,8 @@ def pde(x, y):
     dy_xx = dde.grad.hessian(y, x, i=0, j=0)
     dy_xxxx = dde.grad.hessian(dy_xx, x)
     return (
-        x[:, 1:2]*dy_t
-        + dy_xxxx
+        dy_t
+        + x[:, 1:2]*dy_xxxx
     )
 
 def dy(x, y):
@@ -52,19 +52,19 @@ if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'run3'
+    results_folder = 'run5'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
     # One set is 1000 iterations
-    sets_adam = 30
+    sets_adam = 40
     sets_lbfgs = 5
-    sets_adam2 = 20
+    sets_adam2 = 0
 
     x_train, y_train = load_data('./data/train.parquet')
     x_test, y_test = load_data('./data/test.parquet')
 
-    geom = dde.geometry.Rectangle([0, 1e-5], [1, 10000]) # X x [\eta]
+    geom = dde.geometry.Rectangle([0, 0], [1, 10]) # X x [\eta]
     timedomain = dde.geometry.TimeDomain(0, 1) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
@@ -84,12 +84,12 @@ if __name__ == "__main__":
         pde,
         [bc1, bc2, bc3, bc4, ic],
         num_domain=6000,
-        num_boundary=1500,
-        num_initial=1500,
-        num_test=6000,
+        num_boundary=2000,
+        num_initial=2000,
+        num_test=10000,
     )
 
-    net = dde.nn.FNN([3] + [48] * 4 + [1], "tanh", "Glorot normal")
+    net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot normal")
     model = dde.Model(data, net)
 
     total_sets = sets_adam + sets_lbfgs + sets_adam2

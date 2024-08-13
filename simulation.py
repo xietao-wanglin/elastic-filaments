@@ -49,7 +49,7 @@ class Simulation:
 
     def next_t(self, prev, iteration):
 
-        al = self.dt/(self.eta*self.dx**4)
+        al = self.eta*self.dt/(self.dx**4)
         b = (prev).copy()
         Ab = np.zeros((9, self.n_points))
         Ab[2, 4:] = al
