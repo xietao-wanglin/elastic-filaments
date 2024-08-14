@@ -101,8 +101,8 @@ if __name__ == "__main__":
     errors_test = np.zeros(total_sets)
 
     print('Training Adam optimiser... \n')
+    model.compile("adam", lr=0.001)
     for s in range(sets_adam):
-        model.compile("adam", lr=1e-3)
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
         errors_train[s] = dde.metrics.l2_relative_error(y_train, y_pred_train)
@@ -122,8 +122,8 @@ if __name__ == "__main__":
         losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
     
     print('Training Adam (2) optimiser... \n')
+    model.compile("adam", lr=1e-3)
     for s in range(sets_adam2):
-        model.compile("adam", lr=1e-3)
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_train)
