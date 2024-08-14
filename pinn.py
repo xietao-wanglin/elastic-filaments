@@ -93,8 +93,8 @@ if __name__ == "__main__":
     )
 
     net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot normal")
-    model = dde.Model(data, net)
     net.apply_output_transform(output_transform)
+    model = dde.Model(data, net)
 
     total_sets = sets_adam + sets_lbfgs + sets_adam2
     errors_train = np.zeros(total_sets)
