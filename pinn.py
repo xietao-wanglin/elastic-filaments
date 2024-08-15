@@ -92,7 +92,7 @@ if __name__ == "__main__":
         num_test=10000,
     )
 
-    net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot normal")
+    net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot uniform")
     net.apply_output_transform(output_transform)
     model = dde.Model(data, net)
 
