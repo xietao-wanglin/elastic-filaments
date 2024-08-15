@@ -11,15 +11,15 @@ each with a different value of eta.
 if __name__ == "__main__":
 
     n_etas = 100
-    seed = 5
+    seed = 9
     np.random.seed(seed)
-    eta_range = np.random.uniform(10, 20, n_etas)
+    eta_range = np.random.uniform(0, 10, n_etas)
     data_all = []
     print('Generating dataset... \n')
     for eta in tqdm(eta_range):
-        sim = Simulation(timesteps=1000,
+        sim = Simulation(timesteps=2000,
                          n_points=50,
-                         max_time=1, osc_freq=1,
+                         max_time=10, osc_freq=1,
                          length=1, eta=eta)
         sim.run()
         y, x, t, _ = sim.get_data()
@@ -29,6 +29,6 @@ if __name__ == "__main__":
                 data_all.append(list_data)
 
     df = pd.DataFrame(data_all, columns=['x', 'eta', 't', 'y'])
-    df.to_parquet(f'./data/test_{seed}.parquet')
+    df.to_parquet(f'./data/train_{seed}.parquet')
     df_sub = df.sample(n=10000, random_state=seed)            
-    df_sub.to_parquet(f'./data/test_sub_{seed}.parquet')
+    df_sub.to_parquet(f'./data/train_longtime_{seed}.parquet')

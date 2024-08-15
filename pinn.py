@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'run6'
+    results_folder = 'run11'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -64,11 +64,11 @@ if __name__ == "__main__":
     sets_lbfgs = 5
     sets_adam2 = 0
 
-    x_train, y_train = load_data('./data/train.parquet')
-    x_test, y_test = load_data('./data/test.parquet')
+    x_train, y_train = load_data('./data/train_longtime.parquet')
+    x_test, y_test = load_data('./data/test_longtime.parquet')
 
     geom = dde.geometry.Rectangle([0, 0], [1, 10]) # X x [\eta]
-    timedomain = dde.geometry.TimeDomain(0, 1) # T
+    timedomain = dde.geometry.TimeDomain(0, 10) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
     bc1 = dde.icbc.DirichletBC(geomtime, lambda x: 0, boundary_l) # Not used
