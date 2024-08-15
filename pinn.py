@@ -106,7 +106,7 @@ if __name__ == "__main__":
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
         errors_train[s] = dde.metrics.l2_relative_error(y_train, y_pred_train)
-        errors_test[s] = dde.metrics.l2_relative_error(y_train, y_pred_test)
+        errors_test[s] = dde.metrics.l2_relative_error(y_test, y_pred_test)
         print(f'L2 rel. errors. Prediction: {errors_train[s]}. Extrapolation: {errors_test[s]}')
         losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_train)
-        errors_test[s+sets_adam] = dde.metrics.l2_relative_error(y_train, y_pred_test)
+        errors_test[s+sets_adam] = dde.metrics.l2_relative_error(y_test, y_pred_test)
         losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
     
     print('Training Adam (2) optimiser... \n')
@@ -127,7 +127,7 @@ if __name__ == "__main__":
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
         errors_train[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_train)
-        errors_test[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_train, y_pred_test)
+        errors_test[s+sets_adam+sets_lbfgs] = dde.metrics.l2_relative_error(y_test, y_pred_test)
         losshistory, train_state = model.train(iterations=1000, model_save_path=f'./{results_folder}/model')
 
     print('Saving data... \n')

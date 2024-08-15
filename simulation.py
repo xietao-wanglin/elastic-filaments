@@ -30,7 +30,7 @@ class Simulation:
         length (float, optional): length of the domain, default is 1.0.
         left_bc (str, optional): type of boundary condition at x=0, default is 'clamped'.
         right_bc (str, optional): type of boundary condition at x=L, default is 'free'.
-        ic (Callabel, optional): the initial condition function, default is 0.
+        ic (Callable, optional): the initial condition function, default is 0.
         """
         self.timesteps = timesteps
         self.n_points = n_points
