@@ -100,10 +100,11 @@ if __name__ == "__main__":
     errors_train = np.zeros(total_sets)
     errors_test = np.zeros(total_sets)
 
-    print('Training Adam optimiser... \n')
-    model.compile("adam", lr=0.001)
+    model.compile("L-BFGS")
+    model.restore(save_path = f"./run10/model-45000.pt") # Restore previous weights
 
-    model.restore(save_path = f"./run11/model-45000.pt") # Restore previous weights
+    print('Training Adam optimiser... \n')
+    model.compile("adam", lr=0.001)    
 
     for s in range(sets_adam):
         y_pred_train = model.predict(x_train)
