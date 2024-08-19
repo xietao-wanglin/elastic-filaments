@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'run11'
+    results_folder = 'run13'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -102,6 +102,9 @@ if __name__ == "__main__":
 
     print('Training Adam optimiser... \n')
     model.compile("adam", lr=0.001)
+
+    model.restore(save_path = f"./run11/model-45000.pt") # Restore previous weights
+
     for s in range(sets_adam):
         y_pred_train = model.predict(x_train)
         y_pred_test = model.predict(x_test)
