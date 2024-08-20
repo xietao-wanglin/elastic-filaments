@@ -67,7 +67,7 @@ if __name__ == "__main__":
     x_train, y_train = load_data('./data/train_longtime.parquet')
     x_test, y_test = load_data('./data/test_longtime.parquet')
 
-    geom = dde.geometry.Rectangle([0, 0], [1, 10]) # X x [\eta]
+    geom = dde.geometry.Rectangle([0, 1e-6], [1, 10]) # X x [\eta]
     timedomain = dde.geometry.TimeDomain(0, 10) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
@@ -82,14 +82,21 @@ if __name__ == "__main__":
         lambda _, on_initial: on_initial,
     ) # Not used
 
+    # Collection points
+    n_data = 6000
+    x_data = np.random.uniform(0, 1, n_data)
+    eta_data = np.exp(np.random.uniform(np.log(0.1), np.log(10.1), n_data))-0.1+1e-6
+    t_data = np.random.uniform(0, 10, n_data)
+    data = np.column_stack((x_data, eta_data, t_data))
+
     data = dde.data.TimePDE(
         geomtime,
         pde,
         [bc2, bc3, bc4],
-        num_domain=6000,
+        num_domain=0,
         num_boundary=2000,
-        num_initial=2000,
         num_test=10000,
+        anchors=data
     )
 
     net = dde.nn.FNN([3] + [20] * 4 + [1], "tanh", "Glorot uniform")
