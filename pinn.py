@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'run13'
+    results_folder = 'log_data2'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     x_train, y_train = load_data('./data/train_longtime.parquet')
     x_test, y_test = load_data('./data/test_longtime.parquet')
 
-    geom = dde.geometry.Rectangle([0, 1e-6], [1, 10]) # X x [\eta]
+    geom = dde.geometry.Rectangle([0, 0.0001], [1, 10]) # X x [\eta]
     timedomain = dde.geometry.TimeDomain(0, 10) # T
     geomtime = dde.geometry.GeometryXTime(geom, timedomain) # X x [\eta] x T
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # Collection points
     n_data = 6000
     x_data = np.random.uniform(0, 1, n_data)
-    eta_data = np.exp(np.random.uniform(np.log(0.1), np.log(10.1), n_data))-0.1+1e-6
+    eta_data = np.exp(np.random.uniform(np.log(0.0001), np.log(10), n_data))
     t_data = np.random.uniform(0, 10, n_data)
     data = np.column_stack((x_data, eta_data, t_data))
 
