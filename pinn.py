@@ -107,8 +107,8 @@ if __name__ == "__main__":
     errors_train = np.zeros(total_sets)
     errors_test = np.zeros(total_sets)
 
-    model.compile("L-BFGS")
-    model.restore(save_path = f"./run10/model-45000.pt") # Restore previous weights
+    # model.compile("L-BFGS")
+    # model.restore(save_path = f"./run10/model-45000.pt") # Restore previous weights
 
     print('Training Adam optimiser... \n')
     model.compile("adam", lr=0.001)    
