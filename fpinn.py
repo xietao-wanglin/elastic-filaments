@@ -63,11 +63,23 @@ def feature_transform(x):
                          torch.sin(5*np.pi*x), torch.cos(5*np.pi*x),], dim=1)
     return features
 
+B = torch.normal(mean=0, std=1, size=(128, 2), device=device)
+def feature_transform_random(x):
+    x1 = x[:, 0:1].reshape(-1, 1)
+    eta = x[:, 1:2].reshape(-1, 1)
+    t = x[:, 2:3].reshape(-1, 1)
+    
+    x = x[:, 1:3]
+    s = torch.sin((x @ B.T))
+    c = torch.cos((x @ B.T))
+    features = torch.cat([s, c, x1, eta, t], dim=1)
+    return features
+
 if __name__ == "__main__":
 
     print('Initialisation... \n')
 
-    results_folder = 'fourier_5modes_no_x'
+    results_folder = 'fourier_random_no_x'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -111,8 +123,8 @@ if __name__ == "__main__":
         anchors=data
     )
 
-    net = dde.nn.FNN([23] + [20] * 4 + [1], "tanh", "Glorot uniform")
-    net.apply_feature_transform(feature_transform)
+    net = dde.nn.FNN([259] + [20] * 4 + [1], "tanh", "Glorot uniform")
+    net.apply_feature_transform(feature_transform_random)
     net.apply_output_transform(output_transform)
     model = dde.Model(data, net)
 
