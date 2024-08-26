@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from deepxde.backend import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+torch.manual_seed(0)
 
 def pde(x, y):
     """
@@ -172,3 +173,4 @@ if __name__ == "__main__":
 
     np.save(f'./{results_folder}/errors_train.npy', errors_train)
     np.save(f'./{results_folder}/errors_test.npy', errors_test)
+    np.save(f'./{results_folder}/B_matrix.npy', B.numpy())
