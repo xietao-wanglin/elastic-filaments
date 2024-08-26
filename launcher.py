@@ -5,11 +5,11 @@ from simulation import Simulation
 
 if __name__ == "__main__":
 
-    eta = 40
+    eta = 0.0001
     sim = Simulation(timesteps=1000,
                      n_points=200,
-                     max_time=1, osc_freq=1,
-                     length=1.5, eta=eta)
+                     max_time=10, osc_freq=1,
+                     length=1, eta=eta)
     
     sim.run(verbose=True)
-    sim.save_data(filename=f'filament_1.5_{eta}')
+    sim.create_video()

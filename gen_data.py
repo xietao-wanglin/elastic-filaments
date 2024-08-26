@@ -11,9 +11,9 @@ each with a different value of eta.
 if __name__ == "__main__":
 
     n_etas = 100
-    seed = 9
+    seed = 36
     np.random.seed(seed)
-    eta_range = np.random.uniform(0, 10, n_etas)
+    eta_range = np.random.uniform(1, 10, n_etas)
     data_all = []
     print('Generating dataset... \n')
     for eta in tqdm(eta_range):
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     df = pd.DataFrame(data_all, columns=['x', 'eta', 't', 'y'])
     df.to_parquet(f'./data/train_{seed}.parquet')
     df_sub = df.sample(n=10000, random_state=seed)            
-    df_sub.to_parquet(f'./data/train_longtime_{seed}.parquet')
+    df_sub.to_parquet(f'./data/verystiff_{seed}.parquet')
