@@ -57,7 +57,7 @@ def feature_transform_sfourier(x):
 
 if __name__ == "__main__":
 
-    print('Initialisation... \n')
+    print('Initialisation... HARD - SF\n')
 
     results_folder = f'fixed_hardbcs_sf_{eta}'
     if not os.path.exists(results_folder):

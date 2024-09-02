@@ -55,7 +55,7 @@ def feature_transform_random(x):
 
 if __name__ == "__main__":
 
-    print('Initialisation... \n')
+    print('Initialisation... HARD - RF\n')
 
     results_folder = f'fixed_hardbcs_rf_{eta}'
     if not os.path.exists(results_folder):

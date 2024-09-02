@@ -46,7 +46,7 @@ def output_transform(x, y):
 
 if __name__ == "__main__":
 
-    print('Initialisation... \n')
+    print('Initialisation... HARD\n')
 
     results_folder = f'fixed_hardbcs_{eta}'
     if not os.path.exists(results_folder):

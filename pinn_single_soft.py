@@ -43,7 +43,7 @@ def boundary_r(x, on_boundary):
 
 if __name__ == "__main__":
 
-    print('Initialisation... \n')
+    print('Initialisation... SOFT\n')
 
     results_folder = f'fixed_softbcs_{eta}'
     if not os.path.exists(results_folder):
