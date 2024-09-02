@@ -7,4 +7,4 @@
 
 module load GCCcore/11.3.0 Python/3.10.4
 
-srun python ./pinn_single.py
+srun python ./pinn_single_soft.py
