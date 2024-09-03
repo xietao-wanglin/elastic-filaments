@@ -96,7 +96,7 @@ if __name__ == "__main__":
         anchors=data_anchors
     )
 
-    net = dde.nn.FNN([13] + [20] * 4 + [1], "tanh", "Glorot uniform")
+    net = dde.nn.FNN([23] + [20] * 4 + [1], "tanh", "Glorot uniform")
     net.apply_feature_transform(feature_transform)
     net.apply_output_transform(output_transform)
     model = dde.Model(data, net)
