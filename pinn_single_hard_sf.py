@@ -45,21 +45,19 @@ def output_transform(x, y):
     return x[:, 0:1]*x[:, 1:2]*y
 
 def feature_transform_sfourier(x):
-    x1 = x[:, 0:1]
-    t = x[:, 1:2]
-    features = torch.cat([x1, t,
-                         torch.sin(np.pi*t), torch.cos(np.pi*t),
-                         torch.sin(2*np.pi*t), torch.cos(2*np.pi*t),
-                         torch.sin(3*np.pi*t), torch.cos(3*np.pi*t),
-                         torch.sin(4*np.pi*t), torch.cos(4*np.pi*t),
-                         torch.sin(5*np.pi*t), torch.cos(5*np.pi*t),], dim=1)
+    features = torch.cat([x,
+                         torch.sin(np.pi*x), torch.cos(np.pi*x),
+                         torch.sin(2*np.pi*x), torch.cos(2*np.pi*x),
+                         torch.sin(3*np.pi*x), torch.cos(3*np.pi*x),
+                         torch.sin(4*np.pi*x), torch.cos(4*np.pi*x),
+                         torch.sin(5*np.pi*x), torch.cos(5*np.pi*x),], dim=1)
     return features
 
 if __name__ == "__main__":
 
-    print('Initialisation... HARD - SF\n')
+    print('Initialisation... HARD - SF with x\n')
 
-    results_folder = f'fixed_hardbcs_sf_{eta}'
+    results_folder = f'fixed_hardbcs_sf_{eta}_withx'
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
 
@@ -84,7 +82,7 @@ if __name__ == "__main__":
         num_test=10000,
     )
 
-    net = dde.nn.FNN([12] + [20] * 4 + [1], "tanh", "Glorot uniform")
+    net = dde.nn.FNN([22] + [20] * 4 + [1], "tanh", "Glorot uniform")
     net.apply_feature_transform(feature_transform_sfourier)
     net.apply_output_transform(output_transform)
     model = dde.Model(data, net)
